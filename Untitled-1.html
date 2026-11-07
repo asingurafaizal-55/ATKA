@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YUSRA... My Forever Friend? 💕🥰</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      text-align: center;
+      position: relative;
+    }
+    h1 {
+      font-size: 3.2rem;
+      margin: 20px;
+      text-shadow: 0 0 15px rgba(255,255,255,0.9);
+      animation: pulse 2.5s infinite;
+    }
+    .gif {
+      max-width: 320px;
+      margin: 20px 0;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .buttons {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      margin-top: 30px;
+    }
+    button {
+      padding: 18px 50px;
+      font-size: 1.8rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      position: absolute;
+    }
+    #yesBtn {
+      background: #ff4757;
+      color: white;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #noBtn {
+      background: #57606f;
+      color: white;
+      left: 60%;
+      top: 45%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    .heart-rain {
+      position: absolute;
+      top: -10px;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .heart-rain span {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: fall linear infinite;
+      opacity: 0.9;
+    }
+    @keyframes fall {
+      to { transform: translateY(140vh) rotate(1440deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Gentle romantic piano loop (soft & dreamy, similar reel vibe) -->
+  <audio id="bgMusic" loop volume="0.25">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_9d8f2b3e4a.mp3" type="audio/mpeg">
+    Tap screen to start music 💕
+  </audio>
+
+  <div class="heart-rain" id="hearts"></div>
+
+  <h1 id="question">ATKA... WILL YOU BE MY FOREVER FRIEND? 💕🥰</h1>
+  
+  <img class="gif" id="gif" src="https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif" alt="cute shy character">
+
+  <div class="buttons">
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No 😔</button>
+  </div>
+
+  <script>
+    const question = document.getElementById('question');
+    const gif = document.getElementById('gif');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const heartsContainer = document.getElementById('hearts');
+    const audio = document.getElementById('bgMusic');
+
+    let noCount = 0;
+
+    // Start music on interaction
+    document.body.addEventListener('click', () => { audio.play().catch(() => {}); }, {once: true});
+
+    function createHeart() {
+      const heart = document.createElement('span');
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 5 + 4) + 's';
+      heart.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+
+    setInterval(createHeart, 700);
+
+    function runAwayNo() {
+      noCount++;
+      const maxX = window.innerWidth - 160;
+      const maxY = window.innerHeight - 160;
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+      noBtn.style.position = 'absolute';
+      noBtn.style.transform = `scale(${Math.max(0.4, 1 - noCount * 0.15)}) rotate(${Math.random() * 720 - 360}deg)`;
+
+      noBtn.style.opacity = Math.max(0.4, 1 - noCount * 0.15);
+
+      // Yes grows gently
+      const yesScale = 1 + noCount * 0.15;
+      yesBtn.style.transform = `translate(-50%, -50%) scale(${yesScale})`;
+    }
+
+    let runInterval;
+    noBtn.addEventListener('click', () => {
+      if (noCount === 0) {
+        runInterval = setInterval(runAwayNo, 900); // runs/dodges every ~0.9s
+      }
+      runAwayNo();
+
+      if (noCount < 4) {
+        question.textContent = ["Aww ATKA, please? 🥺💕", "Don't run away cutie 😏", "My heart needs you ❤️", "Pretty please? 😘"][noCount];
+      } else {
+        question.textContent = "Okay... but Yes is waiting for you 💖";
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      clearInterval(runInterval);
+      for (let i = 0; i < 80; i++) {
+        setTimeout(createHeart, i * 60);
+      }
+
+      question.innerHTML = "Yes! I knew it, ATKA... 💕<br>You're my favorite person, my best friend forever.<br>Can't wait to make more memories with you 😘🥰❤️";
+
+      gif.src = "https://media1.tenor.com/m/2J5w7w7w7w8AAAAC/cute-couple-hug-kiss.gif"; // Cute cartoon hugging couple with hearts
+
+      yesBtn.style.display = 'none';
+      noBtn.style.display = 'none';
+
+      setInterval(createHeart, 250); // endless hearts
+    });
+  </script>
+</body>
+</html>
